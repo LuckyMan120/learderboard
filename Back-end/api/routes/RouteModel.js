@@ -14,7 +14,7 @@ router.route("/all").get((req, res) => {
     if (error) throw error;
     const data = {};
     data["blast"] = blast;
-    connection.query("SELECT * FROM `blast`", function (error, player) {
+    connection.query("SELECT * FROM `player`", function (error, player) {
       if (error) throw error;
       data["player"] = player;
 
