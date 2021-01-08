@@ -75,6 +75,7 @@ export default {
 
     onMounted(async () => {
       const data = await getPlaygers();
+      console.log("data", data);
       filterOutData(data);
       loading.value = true;
     });
@@ -88,63 +89,5 @@ export default {
       filterOutData,
     };
   },
-  // name: 'Main',
-  // components: {
-  //   Layout,
-  //   Card,
-  //   Table,
-  //   Loading,
-  // },
-  // data: () => ({
-  //   loading: false,
-  //   tableTitle: 'Players Leaderboard',
-  //   tableHeaders: [
-  //     {
-  //       text: 'Player',
-  //       value: 'player',
-  //     },
-  //     {
-  //       text: 'drive',
-  //       value: 'drive',
-  //     },
-  //     {
-  //       text: 'grit',
-  //       value: 'grit',
-  //     },
-  //     {
-  //       text: 'composure',
-  //       value: 'composure',
-  //     },
-  //   ],
-  //   tableItems: [],
-  // }),
-  // methods: {
-  //   ...mapActions({
-  //     getUsers: 'player/getPlaygers',
-  //   }),
-  //   filterOutData(data) {
-  //     const filteredData = []
-  //     console.log('THI IS DATA', data)
-  //     data.profile.forEach((player, i) => {
-  //       filteredData.push({
-  //         player: {
-  //           name: data.tap[i].playeremail,
-  //           img: data.tap[i].athletetypeprimary.toLowerCase(),
-  //           row: i + 1,
-  //         },
-  //         drive: data.tap[i].drive,
-  //         grit: data.tap[i].grit,
-  //         composure: data.tap[i].composure,
-  //       })
-  //     })
-
-  //     this.tableItems = filteredData
-  //   },
-  // },
-  // async mounted() {
-  //   const data = await this.getUsers()
-  //   this.filterOutData(data)
-  //   this.loading = true
-  // },
 };
 </script>
