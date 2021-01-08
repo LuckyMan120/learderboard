@@ -16,51 +16,48 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { onMounted, ref } from "vue";
+import store from "../store";
+import { createNamespacedHelpers } from "vuex-composition-helpers";
+const { useActions } = createNamespacedHelpers(store, "player");
 
-import Layout from '@/components/Layout/Layout'
-import Card from '@/components/Card/Card'
-import Table from '@/components/Table/Table'
-import Loading from '@/components/Loading/Loading'
+import Layout from "@/components/Layout/Layout";
+import Card from "@/components/Card/Card";
+import Table from "@/components/Table/Table";
+import Loading from "@/components/Loading/Loading";
 
 export default {
-  name: 'Main',
   components: {
     Layout,
     Card,
     Table,
     Loading,
   },
-  data: () => ({
-    loading: false,
-    tableTitle: 'Players Leaderboard',
-    tableHeaders: [
+  setup() {
+    const { getPlaygers } = useActions(["getPlaygers"]);
+    const loading = ref(false);
+    const tableTitle = ref("Players Leaderboard");
+    const tableHeaders = ref([
       {
-        text: 'Player',
-        value: 'player',
+        text: "Player",
+        value: "player",
       },
       {
-        text: 'drive',
-        value: 'drive',
+        text: "drive",
+        value: "drive",
       },
       {
-        text: 'grit',
-        value: 'grit',
+        text: "grit",
+        value: "grit",
       },
       {
-        text: 'composure',
-        value: 'composure',
+        text: "composure",
+        value: "composure",
       },
-    ],
-    tableItems: [],
-  }),
-  methods: {
-    ...mapActions({
-      getUsers: 'player/getPlaygers',
-    }),
-    filterOutData(data) {
-      const filteredData = []
-      console.log('THI IS DATA', data)
+    ]);
+    const tableItems = ref([]);
+    const filterOutData = (data) => {
+      const filteredData = [];
       data.profile.forEach((player, i) => {
         filteredData.push({
           player: {
@@ -71,16 +68,83 @@ export default {
           drive: data.tap[i].drive,
           grit: data.tap[i].grit,
           composure: data.tap[i].composure,
-        })
-      })
+        });
+      });
+      tableItems.value = filteredData;
+    };
 
-      this.tableItems = filteredData
-    },
+    onMounted(async () => {
+      const data = await getPlaygers();
+      filterOutData(data);
+      loading.value = true;
+    });
+
+    return {
+      getPlaygers,
+      loading,
+      tableTitle,
+      tableHeaders,
+      tableItems,
+      filterOutData,
+    };
   },
-  async mounted() {
-    const data = await this.getUsers()
-    this.filterOutData(data)
-    this.loading = true
-  },
-}
+  // name: 'Main',
+  // components: {
+  //   Layout,
+  //   Card,
+  //   Table,
+  //   Loading,
+  // },
+  // data: () => ({
+  //   loading: false,
+  //   tableTitle: 'Players Leaderboard',
+  //   tableHeaders: [
+  //     {
+  //       text: 'Player',
+  //       value: 'player',
+  //     },
+  //     {
+  //       text: 'drive',
+  //       value: 'drive',
+  //     },
+  //     {
+  //       text: 'grit',
+  //       value: 'grit',
+  //     },
+  //     {
+  //       text: 'composure',
+  //       value: 'composure',
+  //     },
+  //   ],
+  //   tableItems: [],
+  // }),
+  // methods: {
+  //   ...mapActions({
+  //     getUsers: 'player/getPlaygers',
+  //   }),
+  //   filterOutData(data) {
+  //     const filteredData = []
+  //     console.log('THI IS DATA', data)
+  //     data.profile.forEach((player, i) => {
+  //       filteredData.push({
+  //         player: {
+  //           name: data.tap[i].playeremail,
+  //           img: data.tap[i].athletetypeprimary.toLowerCase(),
+  //           row: i + 1,
+  //         },
+  //         drive: data.tap[i].drive,
+  //         grit: data.tap[i].grit,
+  //         composure: data.tap[i].composure,
+  //       })
+  //     })
+
+  //     this.tableItems = filteredData
+  //   },
+  // },
+  // async mounted() {
+  //   const data = await this.getUsers()
+  //   this.filterOutData(data)
+  //   this.loading = true
+  // },
+};
 </script>

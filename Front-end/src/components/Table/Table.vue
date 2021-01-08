@@ -71,10 +71,11 @@
 </template>
 
 <script>
-import SortingIcon from '@/assets/icons/sorting-icon.svg'
+import { onMounted, ref, watch } from "vue";
+import SortingIcon from "@/assets/icons/sorting-icon.svg";
 
 export default {
-  name: 'Table',
+  name: "Table",
   components: {
     SortingIcon,
   },
@@ -83,43 +84,46 @@ export default {
     headers: Array,
     items: Array,
   },
-  mounted() {
-    // get a copy of data in local
-    this.localItems = this.items
-  },
-  watch: {
-    items: function() {
-      this.localItems = this.items
-    },
-  },
-  data: () => ({
-    localItems: [],
-    sortingFactor: '',
-  }),
-  methods: {
-    handleSort(value) {
-      if (value === 'player') {
-        this.localItems.sort((a, b) => {
+  setup(props) {
+    const localItems = ref([]);
+    const sortingFactor = ref("");
+
+    const handleSort = (value) => {
+      if (value === "player") {
+        localItems.value.sort((a, b) => {
           if (a.player.row > b.player.row) {
-            return b.player.row - a.player.row
+            return b.player.row - a.player.row;
           } else {
-            return a.player.row - b.player.row
+            return a.player.row - b.player.row;
           }
-        })
+        });
       } else {
-        this.localItems.sort((a, b) => {
+        localItems.value.sort((a, b) => {
           if (a[value] > b[value]) {
-            return b[value] - a[value]
+            return b[value] - a[value];
           } else {
-            return a[value] - b[value]
+            return a[value] - b[value];
           }
-        })
+        });
       }
 
-      this.sortingFactor = value
-    },
+      sortingFactor.value = value;
+    };
+    onMounted(() => {
+      localItems.value = props.items;
+    });
+
+    watch(props.items, function(val) {
+      localItems.value = val;
+    });
+
+    return {
+      localItems,
+      sortingFactor,
+      handleSort,
+    };
   },
-}
+};
 </script>
 <style scoped>
 .sorting-svg {
