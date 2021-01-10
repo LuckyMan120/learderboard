@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, inject } from "vue";
 import store from "../store";
 import { createNamespacedHelpers } from "vuex-composition-helpers";
 const { useActions } = createNamespacedHelpers(store, "player");
@@ -34,6 +34,8 @@ export default {
     Loading,
   },
   setup() {
+    // socket section
+    const socket = inject("socket");
     const { getPlaygers } = useActions(["getPlaygers"]);
     const loading = ref(false);
     const tableTitle = ref("Players Leaderboard");
@@ -76,6 +78,7 @@ export default {
     onMounted(async () => {
       const data = await getPlaygers();
       filterOutData(data.players);
+      callSocket(socket);
       loading.value = true;
     });
 
@@ -86,7 +89,20 @@ export default {
       tableHeaders,
       tableItems,
       filterOutData,
+      ...callSocket(socket),
     };
   },
 };
+function callSocket(socket) {
+  console.log("callSocket", socket);
+  const bar = ref("");
+  socket.on("changePlayer", (value) => {
+    console.log("socket.value", value);
+    bar.value = value;
+  });
+
+  return {
+    bar,
+  };
+}
 </script>

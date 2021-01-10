@@ -3,19 +3,11 @@ const mysql = require("mysql");
 
 const admin = require("firebase-admin");
 
-var serviceAccount = require("./admin.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://leaderboard-322ca-default-rtdb.firebaseio.com",
-  authDomain: "leaderboard-322ca-default-rtdb.firebaseapp.com",
-});
-
 router.route("/all").get((req, res) => {
   var db = admin.database();
   var userRef = db.ref("player");
 
   userRef.once("value", function (snap) {
-    console.log("snap", snap.val());
     res.status(200).json({ players: snap.val() });
   });
   // const connection = mysql.createConnection({
