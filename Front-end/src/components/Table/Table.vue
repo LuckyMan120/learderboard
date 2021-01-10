@@ -89,8 +89,6 @@ export default {
     const sortingFactor = ref("");
 
     const handleSort = (value) => {
-      console.log("value", value);
-      console.log("localItems", localItems);
       if (value === "player") {
         localItems.value.sort((a, b) => {
           if (a.player.row > b.player.row) {

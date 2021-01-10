@@ -58,16 +58,16 @@ export default {
     const tableItems = ref([]);
     const filterOutData = (data) => {
       const filteredData = [];
-      data.profile.forEach((player, i) => {
+      data.forEach((tap, i) => {
         filteredData.push({
           player: {
-            name: data.tap[i].playeremail,
-            img: data.tap[i].athletetypeprimary.toLowerCase(),
+            name: tap.player_tap[0].playeremail,
+            img: tap.player_tap[0].athletetypeprimary.toLowerCase(),
             row: i + 1,
           },
-          drive: data.tap[i].drive,
-          grit: data.tap[i].grit,
-          composure: data.tap[i].composure,
+          drive: tap.player_tap[0].drive,
+          grit: tap.player_tap[0].grit,
+          composure: tap.player_tap[0].composure,
         });
       });
       tableItems.value = filteredData;
@@ -75,8 +75,7 @@ export default {
 
     onMounted(async () => {
       const data = await getPlaygers();
-      console.log("data", data);
-      filterOutData(data);
+      filterOutData(data.players);
       loading.value = true;
     });
 
