@@ -7,6 +7,8 @@ import "./index.css";
 // socket section
 import Socketio from "@/plugins/Socket.io";
 
+// google map section
+
 createApp(App)
   .use(router)
   .use(store)

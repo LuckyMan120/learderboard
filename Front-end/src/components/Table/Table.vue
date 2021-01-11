@@ -87,6 +87,8 @@ export default {
   setup(props) {
     const localItems = ref([]);
     const sortingFactor = ref("");
+    const sortFlag = ref(false);
+    const sortKey = ref("");
 
     const handleSort = (value) => {
       if (value === "player") {
@@ -99,12 +101,27 @@ export default {
         });
       } else {
         localItems.value.sort((a, b) => {
-          if (a[value] > b[value]) {
-            return b[value] - a[value];
+          if (sortFlag.value) {
+            if (sortKey.value === value) {
+              if (a[value] > b[value]) {
+                return b[value] - a[value];
+              } else {
+                return a[value] - b[value];
+              }
+            } else {
+              sortFlag.value = false;
+              return a[value] - b[value];
+            }
           } else {
-            return a[value] - b[value];
+            if (sortKey.value === value) {
+              sortFlag.value = true;
+              return b[value] - a[value];
+            } else {
+              return a[value] - b[value];
+            }
           }
         });
+        sortKey.value = value;
       }
 
       sortingFactor.value = value;
@@ -121,6 +138,8 @@ export default {
       localItems,
       sortingFactor,
       handleSort,
+      sortFlag,
+      sortKey,
     };
   },
 };

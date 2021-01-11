@@ -75,10 +75,20 @@ export default {
       tableItems.value = filteredData;
     };
 
+    // detecting the changes from the back-end
+    socket.on("changePlayer", (value) => {
+      tableItems.value.forEach((item, index) => {
+        if (item.player.name === value.playeremail) {
+          tableItems.value[index].composure = value.player_tap[0].composure;
+          tableItems.value[index].drive = value.player_tap[0].drive;
+          tableItems.value[index].grit = value.player_tap[0].grit;
+        }
+      });
+    });
+
     onMounted(async () => {
       const data = await getPlaygers();
       filterOutData(data.players);
-      callSocket(socket);
       loading.value = true;
     });
 
@@ -89,20 +99,12 @@ export default {
       tableHeaders,
       tableItems,
       filterOutData,
-      ...callSocket(socket),
     };
   },
 };
-function callSocket(socket) {
-  console.log("callSocket", socket);
-  const bar = ref("");
-  socket.on("changePlayer", (value) => {
-    console.log("socket.value", value);
-    bar.value = value;
-  });
-
-  return {
-    bar,
-  };
-}
+// function callSocket(socket) {
+//   socket.on("changePlayer", (value) => {
+//     console.log("socket.value", value);
+//   });
+// }
 </script>
