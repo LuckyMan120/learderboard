@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, toRefs } from "vue";
 
 export default {
   name: "GMap",
@@ -45,6 +45,9 @@ export default {
     // markers on the map
     let currentMarkers = [];
 
+    // markers
+    let { markers } = toRefs(props);
+
     // load in the googel script
     onMounted(() => {
       // create the script element to load
@@ -61,7 +64,7 @@ export default {
     // remove the map from the marker and empty the array
     const clearMarkers = () => {
       currentMarkers.forEach((m) => {
-        m.map = null;
+        m.setMap(null);
       });
 
       currentMarkers = [];
@@ -71,8 +74,9 @@ export default {
     const loadMapMarkers = () => {
       if (!props.markers.length) return;
 
-      //   always clear before loading...
+      // always clear before loading...
       clearMarkers();
+
       // push marker on the map
       props.markers.forEach((markerInfo) => {
         const mapMarker = new window.google.maps.Marker({
@@ -103,12 +107,9 @@ export default {
 
     // need to watch the props.markers to see if
     // the map needs to be updated
-    watch(
-      () => props.markers,
-      (/* old, new */) => {
-        loadMapMarkers();
-      }
-    );
+    watch(markers, (/*old, new*/) => {
+      loadMapMarkers();
+    });
 
     // this function is called as soon as map is initialized
     window.initMap = () => {
@@ -125,6 +126,7 @@ export default {
       // map and access to the map services
       props.mapDidLoad && props.mapDidLoad(map, window.google.maps);
     };
+
     return {
       mapDivRef,
       map,
