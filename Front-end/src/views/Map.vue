@@ -55,6 +55,9 @@ export default defineComponent({
             } else {
               let latlng = results[0].geometry.location.toJSON();
 
+              // reset search value
+              location.value = results[0].formatted_address;
+
               // set the searched pin
               searchedPin.value = results[0].geometry.location.toJSON();
               getNearestPins(latlng);
@@ -78,7 +81,6 @@ export default defineComponent({
           lat: marker.lat,
           lng: marker.long,
         });
-
         // select the pins within Max 1000KM
         if (parseFloat(distance) <= 1000) {
           searchedPins.push(marker);
