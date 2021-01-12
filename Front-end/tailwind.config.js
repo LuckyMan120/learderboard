@@ -6,10 +6,18 @@ module.exports = {
       ...theme('colors'),
       primary: '#EDEEF0',
     }),
+
     fontFamily: {
       Roboto: ['Roboto'],
     },
-    extend: {},
+    boxShadow: {
+      button: '0 0 4px 0 rgba(0,0,0,.3)',
+    },
+    extend: {
+      colors: {
+        'df-brown': '#451400',
+      },
+    },
   },
   variants: {
     extend: {},
