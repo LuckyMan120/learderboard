@@ -108,6 +108,13 @@ export default {
     // need to watch the props.markers to see if
     // the map needs to be updated
     watch(markers, (/*old, new*/) => {
+      map.value = new window.google.maps.Map(mapDivRef.value, {
+        mapTypeId: props.mapType || "hybrid",
+        zoom: props.zoom || 4,
+        disableDefaultUI: props.disableUI || false,
+        center: props.center || { lat: 37.09024, lng: -95.712891 },
+      });
+
       loadMapMarkers();
     });
 

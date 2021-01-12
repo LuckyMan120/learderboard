@@ -11,14 +11,14 @@
     <ul v-if="items.length > 0">
       <li
         v-for="item in items"
-        :key="item.id"
+        :key="item.eventid"
         class="list-item pt-3 flex flex-col relative cursor-pointer px-5"
-        @click="$emit('item-click', item.id)"
+        @click="$emit('item-click', item.eventid)"
       >
         <!-- Title -->
-        <span class="font-bold">{{ item.title }}</span>
+        <span class="font-bold">{{ item.eventname }}</span>
         <!-- Subtitle -->
-        <span class="">{{ item.subtitle }}</span>
+        <span class="">{{ item.venuename }}</span>
 
         <!-- divider -->
         <i class="border-b border-df-brown border-opacity-20 mt-3"></i>
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import TargetLocation from '@/assets/icons/location-target.svg'
+import TargetLocation from "@/assets/icons/location-target.svg";
 
 export default {
-  name: 'List',
-  emits: ['item-click'], // return id
+  name: "List",
+  emits: ["item-click"], // return id
   props: {
     title: String,
     items: Array,
@@ -67,13 +67,13 @@ export default {
   components: {
     TargetLocation,
   },
-}
+};
 </script>
 
 <style scoped>
 /* This css is just only for hover slide effect */
 .list-item::before {
-  content: '';
+  content: "";
   height: 100%;
   width: 0;
   display: block;
