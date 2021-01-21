@@ -54,7 +54,7 @@ export default {
       const googleMapScript = document.createElement("SCRIPT");
       googleMapScript.setAttribute(
         "src",
-        `https://maps.googleapis.com/maps/api/js?key=AIzaSyDoi0kDoetjxsvsctCrRb99I5lu1GJMj_8&callback=initMap`
+        `https://maps.googleapis.com/maps/api/js?key=GoogleMapsAPIKey&callback=initMap`
       );
       googleMapScript.setAttribute("defer", "");
       googleMapScript.setAttribute("async", "");
